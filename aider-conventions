@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Assemble an aider CONVENTIONS.md file from conventions files.
+
+# Function to display usage
+usage() {
+    echo "Usage: $0 [file1.md file2.md ...]"
+    echo "If no files are specified, it lists all .md files in the current directory."
+}
+
+# Determine the directory where the script is located
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+
+# If no arguments are provided, list all .md files in the script's directory
+if [ "$#" -eq 0 ]; then
+    echo -e "Assemble an aider CONVENTIONS.md file from conventions files.\n"
+    usage
+    echo
+    echo "Conventions files available:"
+    for file in "$SCRIPT_DIR"/*.md; do
+        [ -e "$file" ] || { echo "No .md files found."; break; }
+        echo -e " - $(basename "$file" .md)"
+    done
+    exit 1
+fi
+
+# Concatenate specified files into CONVENTIONS.md
+# Append .md extension to each argument and concatenate specified files into CONVENTIONS.md
+for arg in "$@"; do
+    cat "$SCRIPT_DIR/$arg.md" >> CONVENTIONS.md
+done
+echo "Files concatenated into CONVENTIONS.md"

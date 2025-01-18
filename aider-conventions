@@ -4,14 +4,14 @@
 
 # Function to display usage
 usage() {
-    echo "Usage: $0 [file1.md file2.md ...]"
-    echo "If no files are specified, it lists all .md files in the current directory."
+    echo "Usage: $0 [file1 file2 ...]"
+    echo "If no files are specified, it lists all .md files in the current directory, excluding README.md."
 }
 
 # Determine the directory where the script is located
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 
-# If no arguments are provided, list all .md files in the script's directory
+# If no arguments are provided, list all .md files in the script's directory, excluding README.md
 if [ "$#" -eq 0 ]; then
     echo -e "Assemble an aider CONVENTIONS.md file from conventions files.\n"
     usage
@@ -19,7 +19,7 @@ if [ "$#" -eq 0 ]; then
     echo "Conventions files available:"
     for file in "$SCRIPT_DIR"/*.md; do
         [ -e "$file" ] || { echo "No .md files found."; break; }
-        echo -e " - $(basename "$file" .md)"
+        [ "$(basename "$file")" != "README.md" ] && echo -e " - $(basename "$file" .md)" 
     done
     exit 1
 fi

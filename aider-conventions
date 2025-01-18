@@ -25,8 +25,9 @@ if [ "$#" -eq 0 ]; then
 fi
 
 # Concatenate specified files into CONVENTIONS.md
-# Append .md extension to each argument and concatenate specified files into CONVENTIONS.md
 for arg in "$@"; do
-    cat "$SCRIPT_DIR/$arg.md" >> CONVENTIONS.md
+    # Append .md extension if not present
+    [[ "$arg" == *.md ]] || arg="$arg.md"
+    cat "$SCRIPT_DIR/$arg" >> CONVENTIONS.md
 done
 echo "Files concatenated into CONVENTIONS.md"
